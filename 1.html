@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	 <style type="text/css" media="all">
+     #myCanvas{
+     	width: 400px;
+     	height: 200px;
+     	border: 1px #000 solid;
+     }
+     #img1{
+     	width:400px;
+     	height:200px;
+     }
+    </style>	
+</head>
+<body>
+<img id='img1' src="1.jpg">
+<canvas id="myCanvas">
+</canvas>
+    <script>
+    //*************1矩形************
+
+        var c=document.getElementById("myCanvas");
+		var ctx=c.getContext("2d");
+		ctx.fillStyle="#FF0000";//fillRect 
+		// ctx.fillRect(10,10,50,50);//x轴，y轴，宽，高  一个填充的矩形
+		// ctx.strokeRect(10,10,50,50);//未填充的矩形（边框）
+
+
+		// ctx.fillRect(10,10,50,50);//
+		// ctx.clearRect(10,10,20,50);//清除指定矩形区域，让清除部分完全透明。
+
+
+    //*************2线************
+
+		// var c=document.getElementById("myCanvas");
+		// var ctx=c.getContext("2d");
+		// ctx.moveTo(10,10);//开始
+		// ctx.lineTo(100,10);//结束
+  //        ctx.moveTo(100,10);//开始
+		// ctx.lineTo(100,100);//结束
+	 //    ctx.moveTo(100,100);//开始
+		// ctx.lineTo(10,100);//结束
+  //       ctx.moveTo(10,100);//开始
+		// ctx.lineTo(10,10);//结束
+		// ctx.stroke();
+
+
+
+    //*************3圆************
+
+		// var c=document.getElementById("myCanvas");
+		// var ctx=c.getContext("2d");
+		// ctx.beginPath();
+		// // ctx.arc(75,75,50,0,2*Math.PI,true);//arc(x,y,r,start,stop,顺逆)绘制圆形0-2π全圆
+		// // ctx.moveTo(110,75);
+		// // ctx.arc(75,75,35,0,2*Math.PI,false);//同心圆
+
+		// ctx.arc(75,75,50,0,2*Math.PI,true);//arc(x,y,r,start,stop,顺逆)绘制圆形0-2π全圆
+		
+		// ctx.moveTo(110,75);//111111111111111111111111111111(x+r,y)解决画多个园有线的问题
+		// ctx.arc(75,75,35,0,Math.PI,false);
+		// ctx.moveTo(65,65);
+		// ctx.arc(60,65,5,0,2*Math.PI,true);
+		// ctx.moveTo(100,65);
+		// ctx.arc(95,65,5,0,2*Math.PI,true);
+		// ctx.stroke();
+
+
+    //*************4字体************
+
+		// var c=document.getElementById("myCanvas");
+		// var ctx=c.getContext("2d");
+		// ctx.font="30px Arial";
+		// ctx.fillText("11111111111",10,50);
+		// font - 定义字体
+		// fillText(text,x,y) - 在 canvas 上绘制实心的文本
+		// strokeText(text,x,y) - 在 canvas 上绘制空心的文本
+
+		// var c=document.getElementById("myCanvas");
+		// var ctx=c.getContext("2d");
+		// ctx.font="30px Arial";
+		// ctx.strokeText("11111111111",10,50);
+
+
+    //*************5渐变************
+    //createLinearGradient(x,y,x1,y1) - 创建线条渐变
+	// createRadialGradient(x,y,r,x1,y1,r1) - 创建一个径向/圆渐变	
+ //    var c=document.getElementById("myCanvas");
+	// var ctx=c.getContext("2d");
+	// // Create gradient
+	// var grd=ctx.createLinearGradient(0,0,200,0);
+	// grd.addColorStop(0,"red");
+	// grd.addColorStop(1,"white");
+	// // Fill with gradient
+	// ctx.fillStyle=grd;
+	// ctx.fillRect(10,10,150,80);
+
+	// var c=document.getElementById("myCanvas");
+	// var ctx=c.getContext("2d");
+
+	// // Create gradient
+	// var grd=ctx.createRadialGradient(75,50,5,90,60,100);
+	// grd.addColorStop(0,"red");
+	// grd.addColorStop(1,"white");
+
+	// // Fill with gradient
+	// ctx.fillStyle=grd;
+	// ctx.fillRect(10,10,150,80);
+
+
+	// var c=document.getElementById("myCanvas");
+	// var ctx=c.getContext("2d");
+	// var img=document.getElementById("img1");
+
+	// img.onload = function() {
+	// 	ctx.drawImage(img,1,1);
+	// } 
+    </script>
+</body>
+</html>
+
+
+<!-- beginPath()
+新建一条路径，生成之后，图形绘制命令被指向到路径上生成路径。
+closePath()
+闭合路径之后图形绘制命令又重新指向到上下文中。
+stroke()
+通过线条来绘制图形轮廓。
+fill()
+通过填充路径的内容区域生成实心的图形。 -->

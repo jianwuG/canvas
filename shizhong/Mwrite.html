@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>                    
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, height=device-height,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=0">
+	 <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	 <style type="text/css">
+  #canvas{
+        display: block;
+        border: 1px #ccc solid;
+        margin: 20px;
+  }
+  input,select{
+    width: 30%;
+    height: 40px;
+  
+  }
+    </style>	
+  
+</head>
+<body>
+<canvas id="canvas" ></canvas>
+<input type="color" name="color" id="color">
+<input type="button" name="button" id="button"  value="清空">
+
+<select>
+  <option>1</option>
+  <option>3</option>
+  <option>5</option>
+  <option>7</option>
+  <option>9</option>
+  <option>11</option>
+  <option>13</option>
+</select>
+   <script>
+ 
+      var x=Math.min(500,$(window).width()-40);
+      var y=x;
+      var isMove=false;
+      var oldJson={x:0,y:0};
+      var oldTime,newTIme;
+      var c=document.getElementById('canvas');
+      var ctx=c.getContext('2d');
+       ctx.canvas.width=x;
+       ctx.canvas.height=y;
+        
+    // drawBackground();
+    
+    //1.清空功能
+    $('#button').click(()=>{
+      ctx.clearRect(0,0,x,y);
+    });
+    
+
+    function beginStroke(point){
+        isMove=true;
+        oldJson=getXY(point.x,point.y);
+        // oldTime=new Date().getTime();
+
+    }
+    function endStroke(){
+    	isMove=false;
+    }
+    function moveStroke(point){
+    	// e.preventDefault();
+    	if(isMove)
+    	{
+
+    		var newJson=getXY(point.x,point.y);
+	        ctx.beginPath();
+	        ctx.moveTo(oldJson.x,oldJson.y);
+	        ctx.lineTo(newJson.x,newJson.y);
+	              
+            ctx.lineCap='round';
+            $('select').change(
+              function(){
+              ctx.lineWidth=$('select').val();
+              });
+            $('#color').change(
+            function(){
+             ctx.lineWidth=$('select').val();
+             var color=$('#color').val();
+             ctx.strokeStyle=color;
+             // ctx.lineJoin="round";
+             console.log('color',color);
+		        }
+		      );
+       
+    	 }
+    	 
+        
+        ctx.stroke();
+        oldJson=newJson;
+      }
+
+    c.onmousedown=function(e){
+      e.preventDefault();
+     
+      beginStroke({x:e.clientX,y:e.clientY});
+    };
+
+      c.onmousemove=function(e){
+      e.preventDefault();
+      if(isMove)
+      {
+     
+           moveStroke({x:e.clientX,y:e.clientY});
+       };
+     }
+      c.onmouseup=function(e){
+      e.preventDefault();
+       endStroke();
+    };
+      c.onmouseout=function(e){
+      e.preventDefault();
+      endStroke();
+   
+    };
+     
+     c.addEventListener('touchstart',function(e){
+     	e.preventDefault();
+     	touch=e.touches[0];
+     	beginStroke({x:touch.pageX,y:touch.pageY});
+      });
+
+     c.addEventListener('touchmove',function(e){
+     	e.preventDefault();
+     	if(isMove)
+     	{
+         	touch=e.touches[0];
+     		moveStroke({x:touch.pageX,y:touch.pageY});
+     	}
+       });
+      c.addEventListener('touchend',function(e){
+     	e.preventDefault();
+     	endStroke();
+     });
+
+
+
+    function getXY(x,y){
+      var json=c.getBoundingClientRect()
+      return {x:x-json.left,y:y-json.top};
+    }
+ 
+   // function drawBackground(){
+   //    ctx.save();
+   //    ctx.strokeStyle='red';   
+   //     // ctx.beginPath();
+   //     // ctx.moveTo(0,0);
+   //     // ctx.lineTo(x,0);
+   //     // ctx.lineTo(x,y);
+   //     // ctx.lineTo(0,y);
+   //     // ctx.lineTo(0,0);
+   //     // ctx.closePath();
+
+   //     ctx.beginPath();
+   //     ctx.moveTo(3,3);
+   //     ctx.lineTo(x-3,3);
+   //     ctx.lineTo(x-3,y-3);
+   //     ctx.lineTo(3,y-3);
+   //     ctx.lineTo(3,3);
+   //     ctx.closePath();
+   //     ctx.lineWidth=6;
+   //     ctx.stroke();
+
+
+   //     ctx.beginPath();
+   //     ctx.moveTo(0,0);
+   //     ctx.lineTo(x,y);
+
+   //     ctx.moveTo(x,0);
+   //     ctx.lineTo(0,y);
+
+   //     ctx.moveTo(x/2,0);
+   //     ctx.lineTo(x/2,y);
+
+   //     ctx.moveTo(0,y/2);
+   //     ctx.lineTo(x,y/2);
+   //     ctx.lineWidth=1;
+   //     ctx.stroke();
+   //     ctx.restore();
+   // }
+       
+    </script>
+</body>
+</html>

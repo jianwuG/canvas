@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	 <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	 <script src="move.js"></script>
+	 <style type="text/css" media="all">
+	   div{
+	   	text-align: center;
+	   	margin-top:250px;
+	   	position: absolute;
+
+	   }
+	   #clock
+	   {
+	   	border:0px solid #ccc;
+	   }
+    </style>	
+</head>
+<body>
+<div id='box'>
+<canvas id="clock" height="200px" width="200px"></canvas>
+</div>
+
+    <script>
+          var dom=document.getElementById('clock');
+           var ctx=dom.getContext('2d');
+           var width=ctx.canvas.width;
+           var height=ctx.canvas.height;
+           var r=width/2;
+           console.log(width,height,r);
+	          /**
+
+	          **/
+            function drawBcakground(){
+              ctx.save();
+           	  ctx.translate(r,r);//translate() 方法重新映射画布上的 (0,0) 位置。
+           	  ctx.beginPath();
+           	  ctx.lineWidth=6;
+           	  
+           	  ctx.arc(0,0,r-3,0,2*Math.PI);
+           	  //半径为r-lineWidth的一半
+           	  ctx.stroke();
+              ctx.font='20px Arial';
+           	  ctx.textAlign='center';
+           	  ctx.textBaseline='middle';
+              var hourNum=[3,4,5,6,7,8,9,10,11,12,1,2];
+              hourNum.forEach(function(number,i)  
+              {
+             		var rad=2*Math.PI/12*i;//对应的弧度
+             		var x=Math.cos(rad)*(r-20);
+             		var y=Math.sin(rad)*(r-20);
+                ctx.fillText(number,x,y);
+              });
+              for(i=0;i<60;i++)
+              {
+             	var rad=2*Math.PI/60*i;
+             	var x=Math.cos(rad)*(r-10);
+             	var y=Math.sin(rad)*(r-10);
+             	ctx.beginPath();
+             	
+             	if(i%5==0)
+             	{
+
+             	ctx.fillStyle='black';
+             	ctx.arc(x,y,2,0,2*Math.PI);
+
+             	}
+             	else{
+             	ctx.fillStyle='gray';
+             	ctx.arc(x,y,1,0,2*Math.PI);
+
+
+             	}
+             	ctx.fill();
+             }
+             
+           }
+
+	           function drawHour(hour,Minutes){
+	              ctx.save();//因为旋转会导致下一次还是处于旋转状态，所以保存当前状态然后在清楚状态
+	              ctx.beginPath();
+	              var rad=2*Math.PI/12*hour;
+	              var mrad=2*Math.PI/12/60*Minutes;
+	              ctx.rotate(rad+mrad);
+	              ctx.lineCap="round";
+	              ctx.lineWidth=5;
+	              ctx.moveTo(0,10);
+	              ctx.lineTo(0,-r/2);
+	              ctx.stroke();
+	              ctx.restore();
+	           }
+	            function drawMinutes(Minutes){
+	              ctx.save();
+	              ctx.beginPath();
+	              var rad=2*Math.PI/60*Minutes;// 乘值不同小时12分钟60
+	              ctx.rotate(rad);
+	              ctx.lineWidth=3;
+
+	              ctx.moveTo(0,10);
+	              ctx.lineTo(0,-r+30);
+	              ctx.stroke();
+	              ctx.restore();
+	           }
+             function drawSeconds(seconds){
+              ctx.save();
+              ctx.beginPath();
+              ctx.fillStyle='red';
+              var rad=2*Math.PI/60*seconds;// 乘值不同小时12分钟60
+              ctx.rotate(rad);
+              // ctx.lineWidth=3;
+              // ctx.lineCap="round";
+              // ctx.lineStyle='red';
+
+              // ctx.moveTo(0,10);
+              // ctx.lineTo(0,-r+50);
+
+              ctx.moveTo(-2,20);
+              ctx.lineTo(2,20);
+              ctx.lineTo(1,-r+18);
+              ctx.lineTo(-1,-r+18)
+              ctx.fill();
+              ctx.restore();
+           }
+
+           function drawArc(){
+           	  ctx.beginPath();
+           	  ctx.fillStyle='white';
+              ctx.arc(0,0,5,0,2*Math.PI);
+              ctx.fill();
+           }
+           function draw(){
+           ctx.clearRect(0,0,width,height);//
+           drawBcakground();
+
+           var date=new Date();
+           var h=date.getHours();
+           var m=date.getMinutes();
+           var s=date.getSeconds();
+           drawHour(h,m);
+           drawMinutes(m);
+           drawSeconds(s);
+           drawArc();
+           ctx.restore();
+           }
+           draw();
+           setInterval(
+           	draw,1000);
+
+
+          
+           drag('#box');
+    </script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	 <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	 <style type="text/css" media="all">
+	  #chess{
+         display: block;
+         margin: 50px 50px;
+         box-shadow:2px 2px 2px #efefef,5px 5px 5px #b9b9b9;
+          }
+    </style>	
+</head>
+<body>
+<canvas id="chess" ></canvas>
+<script>
+
+         var me=true;
+         var a=[];
+         var chess=document.getElementById('chess');
+         var ctx=chess.getContext('2d');
+         var leng=450;
+         ctx.canvas.width=leng;
+         ctx.canvas.height=leng;
+         
+
+          var logo =new Image();
+          logo.src='1.jpg';
+          
+          logo.onload=function(){
+            // Image onload方法
+          ctx.drawImage(logo,0,0,leng,leng);
+          drawBG();
+            // oneStep(0,0,true);
+            // oneStep(1,1,false);
+       
+         }
+        /**
+        落子
+        **/
+
+        for(var i=0;i<15;i++)
+        {
+          a[i]=[];
+          for(var j=0;j<15;j++)
+          {
+             a[i][j]=0;
+          }
+        }
+        chess.onclick=(e)=>{
+          var x=e.offsetX;
+          var y=e.offsetY;
+          var i=Math.floor(x/30);
+          var j=Math.floor(y/30);
+          if(a[i][j]==0)
+          {
+          oneStep(i,j,me);
+          if(me)
+          {
+            a[i][j]=1;
+          }
+          else{
+            a[i][j]=2;
+
+          }
+          me=!me;
+          }
+        };
+
+
+         /**
+          棋子落位
+         **/
+         function oneStep(i,j,me)
+         {
+          ctx.beginPath();
+          ctx.arc(15+i*30,15+j*30,13,0,2*Math.PI);
+          // ctx.closePath();
+
+            var grd=ctx.createRadialGradient(15+i*30+2,15+j*30-2,13,15+i*30+2,
+            15+j*30-2,0);
+            if(me)
+            {
+               grd.addColorStop(0,'#0a0a0a');
+               grd.addColorStop(1,'#636766');
+            }
+            else{
+               grd.addColorStop(0,'#d1d1d1');
+               grd.addColorStop(1,'#f9f9f9');
+            }
+           
+            ctx.fillStyle=grd;
+            ctx.fill();
+         }
+
+
+         /**
+          棋盘
+         **/
+         function drawBG(){
+           for(var i=0;i<15;i++)
+          {
+          ctx.strokeStyle='gray';
+          ctx.moveTo(15+i*30,15);
+          ctx.lineTo(15+i*30,435);
+          ctx.stroke();
+
+          ctx.moveTo(15,15+i*30);
+          ctx.lineTo(435,15+i*30);
+          ctx.stroke();
+          }
+         }
+        
+    </script>
+</body>
+</html>

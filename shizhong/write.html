@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>                    
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, height=device-height,initial-scale=1.0, 
+   maximum-scale=1.0,minimum-scale=1.0, user-scalable=0">
+	 <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	 <style type="text/css">
+  #canvas{
+        display: block;
+        border: 1px #ccc solid;
+        margin: 20px;
+  }
+  input,#select{
+    width: 10%;
+    height: 40px;
+  
+  }
+    </style>	
+  
+</head>
+<body>
+<canvas id="canvas" ></canvas>
+<input type="color" name="color" id="color">
+<input type="button" name="button" id="button"  value="清空">
+
+<select id='select'>
+  <option>1</option>
+  <option>3</option>
+  <option>5</option>
+  <option>7</option>
+  <option>9</option>
+  <option>11</option>
+  <option>13</option>
+</select>
+
+<select id='xx'>
+  <option >实线</option>
+  <option >虚线</option>
+</select>
+   <script>
+ 
+      var x=500;
+      var y=x;
+      var isMove=false;
+      var oldJson={x:0,y:0};
+
+      var c=document.getElementById('canvas');
+      var ctx=c.getContext('2d');
+       ctx.canvas.width=x;
+       ctx.canvas.height=y;
+        
+    // drawBackground();
+    
+    //1.清空功能
+    $('#button').click(()=>{
+      ctx.clearRect(0,0,x,y);
+    });
+
+    c.onmousedown=function(e){
+        e.preventDefault();
+        isMove=true;
+        oldJson=getXY(e.clientX,e.clientY);
+        console.log('dowm',oldJson);
+    };
+      c.onmousemove=function(e)
+     {
+        e.preventDefault();
+        if($('#xx').val()=='实线')
+        {
+
+        setSX(e);
+        console.log('1111');
+        }
+        else if($('#xx').val()=='虚线')
+        {
+        setXX(e);
+        console.log('2222');
+
+        }
+    }
+      c.onmouseup=function(e){
+      e.preventDefault();
+      isMove=false;
+      console.log('up');
+    };
+      c.onmouseout=function(e){
+      e.preventDefault();
+      isMove=false;
+      console.log('out');
+    };
+    
+
+   /**
+   画实线
+   **/
+    function setSX(e){
+     if(isMove)
+          {
+            change();
+            var newJson=getXY(e.clientX,e.clientY);
+            ctx.beginPath();
+            ctx.moveTo(oldJson.x,oldJson.y);
+            ctx.lineTo(newJson.x,newJson.y);
+                  
+                
+           }
+               
+            ctx.stroke();
+          oldJson=newJson;
+    }
+    
+     /**
+     画虚线
+     **/
+    function setXX(e){
+      if(isMove)
+      {
+        change();
+      var newJson=getXY(e.clientX,e.clientY);
+      ctx.setLineDash([3, 10]);
+      ctx.beginPath();
+      ctx.moveTo(oldJson.x,oldJson.y);
+      ctx.lineTo(newJson.x, newJson.y);
+      ctx.stroke();
+      oldJson=newJson;
+      }
+    }
+
+
+
+
+    function getXY(x,y){
+      var json=c.getBoundingClientRect()
+      return {x:x-json.left,y:y-json.top}
+    }
+    
+
+    /**
+    改变线宽，颜色
+    **/
+    function change(){
+         ctx.lineCap='round';
+         $('#select').change(
+         function(){
+         ctx.lineWidth=$('#select').val();
+         });
+         $('#color').change(
+         function(){
+         ctx.lineWidth=$('s#elect').val();
+         var color=$('#color').val();
+         ctx.strokeStyle=color;
+        // ctx.lineJoin="round";
+         console.log('color',color);
+          }
+         );
+    }
+   // function drawBackground(){
+   //    ctx.save();
+   //    ctx.strokeStyle='red';   
+   //     // ctx.beginPath();
+   //     // ctx.moveTo(0,0);
+   //     // ctx.lineTo(x,0);
+   //     // ctx.lineTo(x,y);
+   //     // ctx.lineTo(0,y);
+   //     // ctx.lineTo(0,0);
+   //     // ctx.closePath();
+
+   //     ctx.beginPath();
+   //     ctx.moveTo(3,3);
+   //     ctx.lineTo(x-3,3);
+   //     ctx.lineTo(x-3,y-3);
+   //     ctx.lineTo(3,y-3);
+   //     ctx.lineTo(3,3);
+   //     ctx.closePath();
+   //     ctx.lineWidth=6;
+   //     ctx.stroke();
+
+
+   //     ctx.beginPath();
+   //     ctx.moveTo(0,0);
+   //     ctx.lineTo(x,y);
+
+   //     ctx.moveTo(x,0);
+   //     ctx.lineTo(0,y);
+
+   //     ctx.moveTo(x/2,0);
+   //     ctx.lineTo(x/2,y);
+
+   //     ctx.moveTo(0,y/2);
+   //     ctx.lineTo(x,y/2);
+   //     ctx.lineWidth=1;
+   //     ctx.stroke();
+   //     ctx.restore();
+   // }
+       
+    </script>
+</body>
+</html>
